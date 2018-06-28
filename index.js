@@ -1,3 +1,13 @@
+function hasPhantomStacktrace() {
+    try {
+        null[0]();
+    } catch (e) {
+        if (indexOfString(err.stack, 'phantomjs') > -1) {
+            return true;
+        }
+    }
+}
+
 function isHeadless(inconsistentPermissionsState) {
     const userAgent = window && window.navigator && window.navigator.userAgent || '';
     const noUserAgent = !userAgent;
@@ -5,7 +15,7 @@ function isHeadless(inconsistentPermissionsState) {
     const isChrome = /(chrome|chromium)/i.test(userAgent);
     const isOpera = /opera/i.test(userAgent);
     const isWebdriver = !!navigator.webdriver;
-    const isPhantom = window.callPhantom || window._phantom;
+    const isPhantom = window.callPhantom || window._phantom || hasPhantomStacktrace();
     const noChromeProperty = !window.chrome;
     const noPlugins = !navigator.plugins.length;
     const noLanguages = !!navigator.languages;
