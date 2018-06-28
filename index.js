@@ -5,6 +5,7 @@ function isHeadless(inconsistentPermissionsState) {
     const isChrome = /(chrome|chromium)/i.test(userAgent);
     const isOpera = /opera/i.test(userAgent);
     const isWebdriver = !!navigator.webdriver;
+    const isPhantom = window.callPhantom || window._phantom;
     const noChromeProperty = !window.chrome;
     const noPlugins = !navigator.plugins.length;
     const noLanguages = !!navigator.languages;
@@ -14,6 +15,7 @@ function isHeadless(inconsistentPermissionsState) {
         noLanguages ||
         isHeadlessChrome ||
         isWebdriver ||
+        isPhantom ||
         ((isChrome || isOpera) && noChromeProperty) ||
         (isChrome && noPlugins) ||
         inconsistentPermissionsState
