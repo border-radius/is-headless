@@ -2,7 +2,7 @@ function hasPhantomStacktrace() {
     try {
         null[0]();
     } catch (e) {
-        if (indexOfString(err.stack, 'phantomjs') > -1) {
+        if (e.stack.indexOf('phantomjs') > -1) {
             return true;
         }
     }
@@ -18,10 +18,10 @@ function isHeadless(inconsistentPermissionsState) {
     const isPhantom = window.callPhantom || window._phantom || hasPhantomStacktrace();
     const noChromeProperty = !window.chrome;
     const noPlugins = !navigator.plugins.length;
-    const noLanguages = !!navigator.languages;
+    const noLanguages = !navigator.languages;
 
     return (
-        !noUserAgent ||
+        noUserAgent ||
         noLanguages ||
         isHeadlessChrome ||
         isWebdriver ||
@@ -40,6 +40,8 @@ function hasInconsistentPermissionsState() {
                 try {
                     if(Notification.permission === 'denied' && permissionStatus.state === 'prompt') {
                         resolve(true);
+                    } else {
+                        resolve();
                     }
                 } catch (e) {
                     resolve();
